@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1636179474666
+Build-Jdk: 11.0.10
+Built-By: qt
+Bundle-Description: Provides forwarding between each pair of hosts via M
+ yTunnel protocol
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-ManifestVersion: 2
+Bundle-Name: onos-app-ipv4-ipv4
+Bundle-SymbolicName: org.onosproject.onos-app-ipv4-ipv4
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: org.onosproject.nextworking.ipv4;version="1.0.0",org.ono
+ sproject.nextworking.ipv4.common;uses:="org.onosproject.core,org.onospr
+ oject.net,org.onosproject.net.group,org.onosproject.net.pi.runtime";ver
+ sion="1.0.0"
+Import-Package: com.google.common.base;version="[22.0,23)",org.onlab.pac
+ ket;version="[2.2,3)",org.onosproject.core;version="[2.2,3)",org.onospr
+ oject.net;version="[2.2,3)",org.onosproject.net.flow;version="[2.2,3)",
+ org.onosproject.net.flow.criteria;version="[2.2,3)",org.onosproject.net
+ .group;version="[2.2,3)",org.onosproject.net.pi.model;version="[2.2,3)"
+ ,org.onosproject.net.pi.runtime;version="[2.2,3)",org.onosproject.nextw
+ orking.ipv4.common,org.slf4j;version="[1.7,2)"
+Require-Capability: osgi.service;filter:="(objectClass=org.onosproject.c
+ ore.CoreService)";effective:=active,osgi.service;filter:="(objectClass=
+ org.onosproject.net.flow.FlowRuleService)";effective:=active,osgi.servi
+ ce;filter:="(objectClass=org.onosproject.net.group.GroupService)";effec
+ tive:=active,osgi.extender;filter:="(&(osgi.extender=osgi.component)(ve
+ rsion>=1.4.0)(!(version>=2.0.0)))",osgi.ee;filter:="(&(osgi.ee=JavaSE)(
+ version=11))"
+Service-Component: OSGI-INF/org.onosproject.nextworking.ipv4.IPv4App.xml
+Tool: Bnd-4.1.0.201810181252
