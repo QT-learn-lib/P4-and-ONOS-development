@@ -85,10 +85,9 @@ BMV2，ipv4-pipeconf(注：IPV4-DEMO-APP先不要激活)。
 
 --topo: mytopo是bmv2.py文件结尾的自定义的topo，可参考更改;
 
---controller: remote,ip=127.0.0.1是连接控制器的地址，本地默认127.0.0.1；
+--controller: remote,ip=127.0.0.1是连接控制器的地址，本地默认127.0.0.1。
 
-![image](https://user-images.githubusercontent.com/67526535/140603043-3fc079b1-4ef7-4cb3-82f4-db17596d3a72.png)
-
+![image](https://user-images.githubusercontent.com/67526535/140698468-846546f7-1432-4fad-a031-31a3893cea6e.png)
 
 **7. 激活IPV4-DEMO-APP**
 
