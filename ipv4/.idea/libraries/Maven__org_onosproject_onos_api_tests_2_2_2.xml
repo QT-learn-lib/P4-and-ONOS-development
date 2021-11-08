@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.onosproject:onos-api:tests:2.2.2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onosproject/onos-api/2.2.2/onos-api-2.2.2-tests.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onosproject/onos-api/2.2.2/onos-api-2.2.2-test-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onosproject/onos-api/2.2.2/onos-api-2.2.2-test-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
