@@ -64,7 +64,7 @@
 ![image](https://user-images.githubusercontent.com/67526535/140602787-1d414fa6-293c-4b58-8f49-96ff10f07ae5.png)
 
 先点击应用，再点击箭头，激活应用。应用激活顺序：
-BMV2，llDP, ipv4-pipeconf(注：IPV4-DEMO-APP先不要激活)。
+BMV2，ipv4-pipeconf(注：IPV4-DEMO-APP先不要激活)。
 
 ![image](https://user-images.githubusercontent.com/67526535/140602853-c73ce19c-ac79-4325-98be-bcf2ac2cc590.png)
   
@@ -73,7 +73,7 @@ BMV2，llDP, ipv4-pipeconf(注：IPV4-DEMO-APP先不要激活)。
 将本项目中的bmv2.py替代文件onos/tools/dev/mininet/bmv2.py，再开一个终端输入：
 
     export BMV2_MN_PY="/home/qt/onos/tools/dev/mininet/bmv2.py"
-    sudo -E mn  --custom $BMV2_MN_PY --switch onosbmv2,pipeconf=nextworking-ipv4-pipeconf --topo mytopo --controller remote,ip=127.0.0.1 --arp
+    sudo -E mn  --custom $BMV2_MN_PY --switch onosbmv2,pipeconf=nextworking-ipv4-pipeconf --topo mytopo --controller remote,ip=127.0.0.1 
   
 参数说明：
 
@@ -87,12 +87,8 @@ BMV2，llDP, ipv4-pipeconf(注：IPV4-DEMO-APP先不要激活)。
 
 --controller: remote,ip=127.0.0.1是连接控制器的地址，本地默认127.0.0.1；
 
---arp: 为全网主机设置静态arp表。
-
 ![image](https://user-images.githubusercontent.com/67526535/140603043-3fc079b1-4ef7-4cb3-82f4-db17596d3a72.png)
 
-为了简单测试，使用上述命令创建拓扑时多加了"--arp"，目的在于创建拓扑网络初期，各个主机就已经知道网络中其它主机的IP到MAC的映射。
-在ping测试时，主机发出就直接是ICMP的数据包了。
 
 **7. 激活IPV4-DEMO-APP**
 
@@ -113,5 +109,4 @@ BMV2，llDP, ipv4-pipeconf(注：IPV4-DEMO-APP先不要激活)。
 
 ## 结束语
 
-  上述实验中的控制器ONOS发的都是二层转发表，三层转发功能也是同样的操作。至于组播功能，其实在P4代码与ONOS代码中都写过。
-如果读者有任何疑问或者想进一步开发的，欢迎随时讨论。
+  本次实验结合了二层转发、三层转发以及组播的功能，如果读者有任何疑问或者想进一步开发的，欢迎随时讨论。
