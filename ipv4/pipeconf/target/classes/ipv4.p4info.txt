@@ -29,7 +29,7 @@ tables {
     id: 4
     name: "hdr.ethernet.etherType"
     bitwidth: 16
-    match_type: TERNARY
+    match_type: EXACT
   }
   action_refs {
     id: 16794342
@@ -44,6 +44,30 @@ tables {
     id: 16800567
   }
   direct_resource_ids: 318786548
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33592790
+    name: "MyIngress.t_l2_multicast"
+    alias: "t_l2_multicast"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ethernet.dstAddr"
+    bitwidth: 48
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16817465
+  }
+  action_refs {
+    id: 16805608
+  }
+  action_refs {
+    id: 16800567
+  }
+  direct_resource_ids: 318798066
   size: 1024
 }
 tables {
@@ -105,6 +129,18 @@ actions {
 }
 actions {
   preamble {
+    id: 16817465
+    name: "MyIngress.set_multicast_group"
+    alias: "set_multicast_group"
+  }
+  params {
+    id: 1
+    name: "gid"
+    bitwidth: 16
+  }
+}
+actions {
+  preamble {
     id: 16799317
     name: "MyIngress.ipv4_forward"
     alias: "ipv4_forward"
@@ -130,6 +166,17 @@ direct_counters {
     unit: BOTH
   }
   direct_table_id: 33617097
+}
+direct_counters {
+  preamble {
+    id: 318798066
+    name: "t_l2_multicast_counter"
+    alias: "t_l2_multicast_counter"
+  }
+  spec {
+    unit: BOTH
+  }
+  direct_table_id: 33592790
 }
 direct_counters {
   preamble {

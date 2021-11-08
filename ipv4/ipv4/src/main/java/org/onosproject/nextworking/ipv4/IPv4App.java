@@ -138,25 +138,27 @@ public class IPv4App {
 
         /* Distributed L3 flow able */
 
-//        // S1
-//        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s1"), Ip4Address.valueOf("10.0.0.1"),
-//                PortNumber.fromString("1"), MacAddress.valueOf("00:00:00:00:00:01"));
-//        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s1"), Ip4Address.valueOf("10.0.0.2"),
-//                PortNumber.fromString("2"), MacAddress.valueOf("08:00:00:00:00:01"));
-//        // S2
-//        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s2"), Ip4Address.valueOf("10.0.0.1"),
-//                PortNumber.fromString("1"), MacAddress.valueOf("08:00:00:00:00:01"));
-//        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s2"), Ip4Address.valueOf("10.0.0.2"),
-//                PortNumber.fromString("2"), MacAddress.valueOf("08:00:00:00:00:02"));
-//        // S3
-//        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s3"), Ip4Address.valueOf("10.0.0.1"),
-//                PortNumber.fromString("1"), MacAddress.valueOf("08:00:00:00:00:02"));
-//        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s3"), Ip4Address.valueOf("10.0.0.2"),
-//                PortNumber.fromString("2"), MacAddress.valueOf("00:00:00:00:00:02"));
+        // S1
+        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s1"), Ip4Address.valueOf("10.0.0.1"),
+                PortNumber.fromString("1"), MacAddress.valueOf("00:00:00:00:00:01"));
+        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s1"), Ip4Address.valueOf("10.0.0.2"),
+                PortNumber.fromString("2"), MacAddress.valueOf("08:00:00:00:00:01"));
+        // S2
+        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s2"), Ip4Address.valueOf("10.0.0.1"),
+                PortNumber.fromString("1"), MacAddress.valueOf("08:00:00:00:00:01"));
+        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s2"), Ip4Address.valueOf("10.0.0.2"),
+                PortNumber.fromString("2"), MacAddress.valueOf("08:00:00:00:00:02"));
+        // S3
+        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s3"), Ip4Address.valueOf("10.0.0.1"),
+                PortNumber.fromString("1"), MacAddress.valueOf("08:00:00:00:00:02"));
+        insertipv4ForwardRule(DeviceId.deviceId("device:bmv2:s3"), Ip4Address.valueOf("10.0.0.2"),
+                PortNumber.fromString("2"), MacAddress.valueOf("00:00:00:00:00:02"));
 
         /* Setup multicast tables for switches */
 
-//        setupMtcastTables(DeviceId.deviceId("device:bmv2:s1"));
+        setupMtcastTables(DeviceId.deviceId("device:bmv2:s1"));
+        setupMtcastTables(DeviceId.deviceId("device:bmv2:s2"));
+        setupMtcastTables(DeviceId.deviceId("device:bmv2:s3"));
 
     }
 
@@ -208,7 +210,7 @@ public class IPv4App {
         Set<PortNumber> ports = new HashSet<PortNumber>();
         ports.add(PortNumber.fromString("1"));
         ports.add(PortNumber.fromString("2"));
-        ports.add(PortNumber.fromString("3"));
+//        ports.add(PortNumber.fromString("3"));
 
         if (ports.isEmpty()) {
             // Stop here.
@@ -287,7 +289,12 @@ public class IPv4App {
 
         // Ternary match on dstMAC
         final PiMatchFieldId dstMACMatchFieldId = PiMatchFieldId.of("hdr.ethernet.dstAddr");
+        final PiMatchFieldId etherType = PiMatchFieldId.of("hdr.ethernet.etherType");
+        // ARP : 0x0806
         final PiCriterion match = PiCriterion.builder()
+                .matchExact(
+                        etherType,
+                        0x0806)
                 .matchTernary(
                         dstMACMatchFieldId,
                         dstMAC.toBytes(),

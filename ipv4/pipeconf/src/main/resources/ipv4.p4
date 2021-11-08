@@ -15,11 +15,14 @@ typedef bit<16> mcast_group_id_t;
 typedef bit<48> macAddr_t;
 typedef bit<32> ip4Addr_t;
 
-const bit<16> TYPE_IPV4 = 0x800;
+const bit<16> TYPE_ARP  = 0x0806;
+const bit<16> TYPE_IPV4 = 0x0800;
 
-const bit<8> IP_PROTO_ICMP   = 1;
-const bit<8> IP_PROTO_TCP    = 6;
-const bit<8> IP_PROTO_UDP    = 17;
+const bit<8> IP_PROTO_ICMP = 1;
+const bit<8> IP_PROTO_TCP  = 6;
+const bit<8> IP_PROTO_UDP  = 17;
+
+const bit<48> BROADCAST_DSTADDR = 0xffffffffffff;
 
 // const port_t CPU_PORT = 255;
 /*************************************************************************
@@ -210,10 +213,10 @@ control MyIngress(inout headers hdr,
 
     table t_l2_fwd {
         key = {
-            standard_metadata.ingress_port  : ternary;
+            standard_metadata.ingress_port : ternary;
             hdr.ethernet.dstAddr           : ternary;
             hdr.ethernet.srcAddr           : ternary;
-            hdr.ethernet.etherType         : ternary;
+            hdr.ethernet.etherType         : exact;
         }
         actions = {
             set_out_port;
@@ -229,7 +232,7 @@ control MyIngress(inout headers hdr,
     }
 
     // --- t_l2_multicast (for broadcast/multicast entries) --------------------------------
-    /*
+    
     action set_multicast_group(mcast_group_id_t gid){
         standard_metadata.mcast_grp = gid;
         meta.is_multicast = true;
@@ -251,7 +254,7 @@ control MyIngress(inout headers hdr,
         @name("t_l2_multicast_counter")
         counters = direct_counter(CounterType.packets_and_bytes);
     }
-    */
+    
     // --- ipv4_lpm (l3 fwd) --------------------------------
     
     action ipv4_forward(macAddr_t dstAddr, egressSpec_t port) {
@@ -289,12 +292,34 @@ control MyIngress(inout headers hdr,
             hdr.packet_out.setInvalid();
             exit;
         }
-        
-        if(!t_l2_fwd.apply().hit){
+
+        // handle ARP packets
+        if (hdr.ethernet.etherType == TYPE_ARP){
+            // handle ARP Request
+            if (hdr.ethernet.dstAddr == BROADCAST_DSTADDR){
+
+                t_l2_multicast.apply();
+
+            }
+            else{  // handle ARP Response
+
+                t_l2_fwd.apply();
+            }
+
+        }
+
+        // L3 forwarding
+        if (hdr.ipv4.isValid()){
 
             ipv4_lpm.apply();
 
-            }
+        }
+
+        // if(!t_l2_fwd.apply().hit){
+
+        //     ipv4_lpm.apply();
+
+        //     }
     }
 }
 
@@ -317,10 +342,10 @@ control MyEgress(inout headers hdr,
         // }
 
         // Prevention of Broadcast Storm
-        // if (meta.is_multicast == true && 
-        //       standard_metadata.ingress_port == standard_metadata.egress_port){
-        //     mark_to_drop(standard_metadata);
-        // }
+        if (meta.is_multicast == true && 
+              standard_metadata.ingress_port == standard_metadata.egress_port){
+            mark_to_drop(standard_metadata);
+        }
     }
 }
 
