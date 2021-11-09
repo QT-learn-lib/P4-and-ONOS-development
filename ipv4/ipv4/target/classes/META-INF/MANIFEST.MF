@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1636367498403
+Bnd-LastModified: 1636438345956
 Build-Jdk: 11.0.10
 Built-By: qt
 Bundle-Description: Provides forwarding between each pair of hosts via M
@@ -16,17 +16,19 @@ Export-Package: org.onosproject.nextworking.ipv4;version="1.0.0",org.ono
  sion="1.0.0"
 Import-Package: com.google.common.base;version="[22.0,23)",org.onlab.pac
  ket;version="[2.2,3)",org.onosproject.core;version="[2.2,3)",org.onospr
- oject.net;version="[2.2,3)",org.onosproject.net.flow;version="[2.2,3)",
- org.onosproject.net.flow.criteria;version="[2.2,3)",org.onosproject.net
- .group;version="[2.2,3)",org.onosproject.net.pi.model;version="[2.2,3)"
- ,org.onosproject.net.pi.runtime;version="[2.2,3)",org.onosproject.nextw
- orking.ipv4.common,org.slf4j;version="[1.7,2)"
+ oject.net;version="[2.2,3)",org.onosproject.net.device;version="[2.2,3)
+ ",org.onosproject.net.flow;version="[2.2,3)",org.onosproject.net.flow.c
+ riteria;version="[2.2,3)",org.onosproject.net.group;version="[2.2,3)",o
+ rg.onosproject.net.pi.model;version="[2.2,3)",org.onosproject.net.pi.ru
+ ntime;version="[2.2,3)",org.onosproject.nextworking.ipv4.common,org.slf
+ 4j;version="[1.7,2)"
 Require-Capability: osgi.service;filter:="(objectClass=org.onosproject.c
  ore.CoreService)";effective:=active,osgi.service;filter:="(objectClass=
- org.onosproject.net.flow.FlowRuleService)";effective:=active,osgi.servi
- ce;filter:="(objectClass=org.onosproject.net.group.GroupService)";effec
- tive:=active,osgi.extender;filter:="(&(osgi.extender=osgi.component)(ve
- rsion>=1.4.0)(!(version>=2.0.0)))",osgi.ee;filter:="(&(osgi.ee=JavaSE)(
- version=11))"
+ org.onosproject.net.device.DeviceService)";effective:=active,osgi.servi
+ ce;filter:="(objectClass=org.onosproject.net.flow.FlowRuleService)";eff
+ ective:=active,osgi.service;filter:="(objectClass=org.onosproject.net.g
+ roup.GroupService)";effective:=active,osgi.extender;filter:="(&(osgi.ex
+ tender=osgi.component)(version>=1.4.0)(!(version>=2.0.0)))",osgi.ee;fil
+ ter:="(&(osgi.ee=JavaSE)(version=11))"
 Service-Component: OSGI-INF/org.onosproject.nextworking.ipv4.IPv4App.xml
 Tool: Bnd-4.1.0.201810181252

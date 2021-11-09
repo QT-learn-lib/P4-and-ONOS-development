@@ -16,7 +16,7 @@
 | P4                  | Refer to the website https://blog.csdn.net/father_is_/article/details/108225712      |
 | ONOS                | Refer to the website https://wiki.onosproject.org/display/ONOS/Developer+Quick+Start |
 | Maven               | Apache Maven 3.3.9                                                                   |
-| Java                | version:11.0.10                                                                      |
+| Java                | Version:11.0.10                                                                      |
 
 在安装P4与ONOS的过程中可能会出现一些问题，最大的原因可能是相关文件下载不了。所以我们在安装软件之前，尽量保持在网速较快的
 情况下，或者通过"梯子"去进行下载安装。

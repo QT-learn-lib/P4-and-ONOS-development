@@ -51,19 +51,18 @@ import org.onosproject.net.topology.Topology;
 import org.onosproject.net.topology.TopologyService;
 import org.slf4j.Logger;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
 // by qt
+import org.onosproject.net.device.DeviceService;
+import org.onosproject.net.Device;
+import org.onosproject.net.Port;
 import org.onosproject.nextworking.ipv4.common.Utils;
 import org.onosproject.net.group.GroupDescription;
 import org.onosproject.net.group.GroupService;
-import java.util.HashSet;
 
 /**
  * IPv4 application which provides forwarding between each pair of hosts via
@@ -90,6 +89,9 @@ public class IPv4App {
     //--------------------------------------------------------------------------
     // ONOS core services needed by this application.
     //--------------------------------------------------------------------------
+
+    @Reference(cardinality = ReferenceCardinality.MANDATORY)
+    private DeviceService deviceService;
 
     @Reference(cardinality = ReferenceCardinality.MANDATORY)
     private FlowRuleService flowRuleService;
@@ -156,9 +158,16 @@ public class IPv4App {
 
         /* Setup multicast tables for switches */
 
-        setupMtcastTables(DeviceId.deviceId("device:bmv2:s1"));
-        setupMtcastTables(DeviceId.deviceId("device:bmv2:s2"));
-        setupMtcastTables(DeviceId.deviceId("device:bmv2:s3"));
+        Iterable<Device> Devices = deviceService.getDevices();
+        Iterator<Device> devices = Devices.iterator();
+        while (devices.hasNext()){
+            DeviceId deviceId = devices.next().id();
+            setupMtcastTables(deviceId);
+            // log.info("Device {} find", deviceId);
+        }
+//        setupMtcastTables(DeviceId.deviceId("device:bmv2:s1"));
+//        setupMtcastTables(DeviceId.deviceId("device:bmv2:s2"));
+//        setupMtcastTables(DeviceId.deviceId("device:bmv2:s3"));
 
     }
 
@@ -207,10 +216,13 @@ public class IPv4App {
     private void insertMulticastGroup(DeviceId switchId) {
 
         // Replicate packets where we know hosts are attached.
-        Set<PortNumber> ports = new HashSet<PortNumber>();
-        ports.add(PortNumber.fromString("1"));
-        ports.add(PortNumber.fromString("2"));
-//        ports.add(PortNumber.fromString("3"));
+        Set<PortNumber> ports = new HashSet<>();
+        List<Port> tPorts = deviceService.getPorts(switchId);
+        for(Port port : tPorts){
+            PortNumber portNumber = port.number();
+            ports.add(portNumber);
+            // log.info("Device port {} find", portNumber);
+        }
 
         if (ports.isEmpty()) {
             // Stop here.
@@ -277,7 +289,7 @@ public class IPv4App {
      * function for the given switchId, dstIpAddr, outPort and dstMAC.
      *
      * @param switchId  Switch ID
-     * @param ethdstAddr  Destination MAC
+     * @param dstMAC  Destination MAC
      * @param outPort  Output port where to forward packets
      */
     private void insertL2ForwardRule(DeviceId switchId,
